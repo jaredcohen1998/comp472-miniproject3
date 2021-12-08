@@ -3,12 +3,10 @@ from gensim.similarities import MatrixSimilarity
 import pandas as pd
 import random
 
-def taskone():
-    modelName = "word2vec-google-news-300"
-    targetFile = F"{modelName}-model.csv"
-    synonymFile = "data/synonyms.csv"
+def experiment_with_model(modelName, synonymFile):
+    targetFile = F"data/{modelName}-model.csv"
 
-    print(F"\nLoading model {modelName}...")
+    print(F"\n\n===LOADING MODEL {modelName}===")
     model = api.load(modelName)
 
     print(F"Loading {synonymFile}...")
@@ -70,9 +68,20 @@ def taskone():
     df.to_csv(targetFile, index=False)
 
     print(F"Wrote to file {targetFile}")
-    
-    targetFile = "analysis.csv"
-    print(F"\nWriting to file {targetFile}...")
+
+    if (num_words - num_guesses == 0):
+        accuracy = 0
+    else:
+        accuracy = num_correct / (num_words - num_guesses)
+
+    return (modelName, model.vectors.shape[0], num_correct, num_words, num_guesses, accuracy)
+
+
+def main():
+    synonymFile = "data/synonyms.csv"
+    models_list = [
+        "word2vec-google-news-300", "glove-wiki-gigaword-300", "fasttext-wiki-news-subwords-300", "glove-twitter-50", "glove-twitter-100"
+    ]
 
     modelName_list = []
     model_size_list = []
@@ -80,23 +89,25 @@ def taskone():
     num_answered_list = []
     accuracy_list = []
 
-    modelName_list.append(modelName)
-    model_size_list.append(model.vectors.shape[0])
-    num_correct_list.append(num_correct)
-    num_answered_list.append(num_words - num_guesses)
-    if (num_words - num_guesses != 0):
-        accuracy_list.append(num_correct / (num_words - num_guesses))
-    else:
-        accuracy_list.append(0)
+    for i in range(len(models_list)):
+        model_name, model_size, num_correct, num_words, num_guesses, accuracy = experiment_with_model(models_list[i], synonymFile)
+
+        modelName_list.append(model_name)
+        model_size_list.append(model_size)
+        num_correct_list.append(num_correct)
+        num_answered_list.append(num_words - num_guesses)
+        if (num_words - num_guesses != 0):
+            accuracy_list.append(num_correct / (num_words - num_guesses))
+        else:
+            accuracy_list.append(0)
+
+    targetFile = "data/analysis.csv"
+    print(F"\nWriting to file {targetFile}...")
 
     df = pd.DataFrame({"model name": modelName_list, "size": model_size_list, "correct labels": num_correct_list, "answered": num_answered_list, "accuracy": accuracy_list})
     df.to_csv(targetFile, index=False)
 
     print(F"Wrote to file {targetFile}")
-
-
-def main():
-    taskone()
 
 if __name__ == "__main__":
     main()
