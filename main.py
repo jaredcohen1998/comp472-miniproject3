@@ -18,6 +18,8 @@ def taskone():
     guess_word_list = []
     label_list = []
     num_words = 0
+    num_correct = 0
+    num_guesses = 0
     csv = pd.read_csv(synonymFile)
 
     print(F"Gathering data to write to {targetFile}...")
@@ -28,8 +30,6 @@ def taskone():
         answer_word_list.append(r['answer'])
 
         cs_list = []
-        num_correct = 0
-        num_guesses = 0
         keyword_exists = r['question'] in model.key_to_index
         w1_exists = r['0'] in model.key_to_index
         w2_exists = r['1'] in model.key_to_index
@@ -81,7 +81,7 @@ def taskone():
     accuracy_list = []
 
     modelName_list.append(modelName)
-    model_size_list.append(model.vector_size)
+    model_size_list.append(model.vectors.shape[0])
     num_correct_list.append(num_correct)
     num_answered_list.append(num_words - num_guesses)
     if (num_words - num_guesses != 0):
