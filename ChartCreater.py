@@ -1,3 +1,4 @@
+
 import pandas
 import matplotlib.pyplot as plt
 
@@ -45,7 +46,7 @@ print("Chart complete!")
 Models.append("Human")
 Models.append("Random")
 modelAccuracies.append(humanAccuracy)
-modelAccuracies.append(0.2)
+modelAccuracies.append(randomAccuracy)
 
 print("Generating Appended Accuracy chart...")
 plt.bar(Models, modelAccuracies)
