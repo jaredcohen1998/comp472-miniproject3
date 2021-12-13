@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 humanAccuracy = 0.8557
 humanAnswered = 80
-randomAccuracy = 0.20
+randomAccuracy = 0.25
 results = pandas.read_csv('data//analysis.csv')
 df = pandas.DataFrame(results)
 # Names in file are to big for a nice bar chart.
