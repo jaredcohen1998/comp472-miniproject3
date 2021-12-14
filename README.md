@@ -7,3 +7,7 @@ Gensim: https://radimrehurek.com/gensim/
   
 Pandas: https://pandas.pydata.org/docs/getting_started/install.html
   pip install pandas
+  
+---Running the program---
+Main program: python main.py
+Chart creator: python ChartCreater.py
